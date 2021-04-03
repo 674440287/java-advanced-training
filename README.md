@@ -1,2 +1,4 @@
-# java-advanced-training
-java-advance-training-camp
+# 作业
+1. 第一周作业：week001
+2. 第二周作业：week002
+3. 第三周作业：week003
