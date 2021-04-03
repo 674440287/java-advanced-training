@@ -4,6 +4,7 @@ package io.github.kimmking.gateway.outbound.httpclient4;
 import io.github.kimmking.gateway.filter.HeaderHttpResponseFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpResponseFilter;
+import io.github.kimmking.gateway.outbound.OutBoundHandler;
 import io.github.kimmking.gateway.router.HttpEndpointRouter;
 import io.github.kimmking.gateway.router.RandomHttpEndpointRouter;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-public class HttpOutboundHandler {
+public class HttpOutboundHandler  implements OutBoundHandler {
 
     private final HttpClientRequest httpClientRequest;
 

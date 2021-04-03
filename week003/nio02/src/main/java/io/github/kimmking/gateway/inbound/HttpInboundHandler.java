@@ -3,7 +3,9 @@ package io.github.kimmking.gateway.inbound;
 import io.github.kimmking.gateway.filter.CustomHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HeaderHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
+import io.github.kimmking.gateway.outbound.OutBoundHandler;
 import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
+import io.github.kimmking.gateway.outbound.okhttp.OkhttpOutboundHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,7 +30,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final List<String> proxyServer;
-    private HttpOutboundHandler handler;
+    private OutBoundHandler handler;
     private List<HttpRequestFilter> filters = new ArrayList<>();
 
 
@@ -36,7 +38,8 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
         this.proxyServer = proxyServer;
 
-        this.handler = new HttpOutboundHandler(this.proxyServer);
+//        this.handler = new HttpOutboundHandler(this.proxyServer);
+        this.handler = new OkhttpOutboundHandler(this.proxyServer);
 
         filters.add(new HeaderHttpRequestFilter());
 
@@ -51,18 +54,13 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            long startTime = System.currentTimeMillis();
-
-            System.out.println("channelRead流量接口请求开始，时间为 = "+startTime);
             FullHttpRequest fullRequest = (FullHttpRequest) msg;
             String uri = fullRequest.uri();
-            System.out.println("接收到的请求url = "+ uri);
             if (uri.contains("/test")) {
                 handlerTest(fullRequest, ctx, filters);
             }else {
                 handler.handle(fullRequest, ctx, filters);
             }
-            System.out.println("total cost  = "+ (System.currentTimeMillis() -startTime));
 
         } catch(Exception e) {
             e.printStackTrace();
