@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class HttpClientRequest {
     public static void main(String[] args) throws IOException {
-        doGet("http://localhost:8801");
+        System.out.println(doGet("http://localhost:18802/user/redis"));
     }
 
     private static String doGet(String url) throws IOException {

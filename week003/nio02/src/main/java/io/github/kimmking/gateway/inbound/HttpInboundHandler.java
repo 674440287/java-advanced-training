@@ -1,5 +1,6 @@
 package io.github.kimmking.gateway.inbound;
 
+import io.github.kimmking.gateway.filter.CustomHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HeaderHttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
 import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
@@ -27,13 +29,20 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final List<String> proxyServer;
     private HttpOutboundHandler handler;
-    private HttpRequestFilter filter = new HeaderHttpRequestFilter();
-    
+    private List<HttpRequestFilter> filters = new ArrayList<>();
+
+
     public HttpInboundHandler(List<String> proxyServer) {
+
         this.proxyServer = proxyServer;
+
         this.handler = new HttpOutboundHandler(this.proxyServer);
+
+        filters.add(new HeaderHttpRequestFilter());
+
+        filters.add(new CustomHttpRequestFilter());
     }
-    
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
@@ -49,9 +58,9 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
             String uri = fullRequest.uri();
             System.out.println("接收到的请求url = "+ uri);
             if (uri.contains("/test")) {
-                handlerTest(fullRequest, ctx);
+                handlerTest(fullRequest, ctx, filters);
             }else {
-                handler.handle(fullRequest, ctx, filter);
+                handler.handle(fullRequest, ctx, filters);
             }
             System.out.println("total cost  = "+ (System.currentTimeMillis() -startTime));
 
@@ -62,9 +71,12 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private void handlerTest(FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
+    private void handlerTest(FullHttpRequest fullRequest, ChannelHandlerContext ctx, List<HttpRequestFilter> filters) {
         FullHttpResponse response = null;
         try {
+            for (HttpRequestFilter filter:filters){
+                filter.filter(fullRequest, ctx);
+            }
             String value = "{\"msg\":\"huahuadebaby\"}";
             response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes(StandardCharsets.UTF_8)));
             response.headers().set("Content-Type", "application/json");
