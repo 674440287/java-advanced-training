@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,7 +8,7 @@ public class Method3 {
 
     public static void main(String[] args) throws Exception {
         Callable<Integer> callable = ()->{
-            return 1;
+            return new Random().nextInt();
         };
 
         ExecutorService threadPool = Executors.newSingleThreadExecutor();

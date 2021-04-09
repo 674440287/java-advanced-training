@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class Method1 {
     
@@ -8,7 +9,7 @@ public class Method1 {
         // 在这里创建一个线程或线程池，
         // 异步执行 下面方法
     
-        int result = sum(); //这是得到的返回值
+        int result = random(); //这是得到的返回值
         
         // 确保  拿到result 并输出
         System.out.println("异步计算结果为："+result);
@@ -18,13 +19,8 @@ public class Method1 {
         // 然后退出main线程
     }
     
-    private static int sum() {
-        return fibo(36);
+    private static int random() {
+        return new Random().nextInt();
     }
-    
-    private static int fibo(int a) {
-        if ( a < 2) 
-            return 1;
-        return fibo(a-1) + fibo(a-2);
-    }
+
 }
