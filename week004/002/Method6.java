@@ -6,7 +6,7 @@ public class Method6 {
 
     public static void main(String[] args) {
         ExecutorService executor = Executors.newCachedThreadPool();
-        FutureTask<Integer> task = new FutureTask((Callable<Integer>) () -> new Random().nextInt());
+        FutureTask<Integer> task = new FutureTask<>(() -> new Random().nextInt());
         executor.submit(task);
 
         try {
