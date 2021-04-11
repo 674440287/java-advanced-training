@@ -19,7 +19,5 @@ public class Method11 {
             return "Hello world!";
         }).join();
         System.out.println(result);
-
-
     }
 }
