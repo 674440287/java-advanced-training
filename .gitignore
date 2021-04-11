@@ -27,3 +27,5 @@ hs_err_pid*
 ehcache.disk.store.dir
 
 *.txt
+
+out
