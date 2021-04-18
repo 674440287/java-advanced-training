@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Spring boot properties configuration.
  */
-@ConfigurationProperties(prefix = "demo")
+@ConfigurationProperties(prefix = "demo.lyp")
 @Getter
 @Setter
 public final class SpringBootPropertiesConfiguration {

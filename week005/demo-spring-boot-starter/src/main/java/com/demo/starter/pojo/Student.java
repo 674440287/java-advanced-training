@@ -31,10 +31,6 @@ public class Student implements Serializable, BeanNameAware, ApplicationContextA
         System.out.println("hello...........");
     }
     
-//    public Student create(){
-//        return new Student(101,"KK101");
-//    }
-
     public void print() {
         System.out.println(this.beanName);
         System.out.println("   context.getBeanDefinitionNames() ===>> "

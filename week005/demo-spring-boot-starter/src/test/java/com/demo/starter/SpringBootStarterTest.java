@@ -2,8 +2,13 @@ package com.demo.starter;
 
 
 
+import com.demo.starter.pojo.Klass;
+import com.demo.starter.pojo.School;
+import com.demo.starter.pojo.Student;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,8 +32,30 @@ import static org.junit.Assert.assertTrue;
 @SpringBootApplication
 public class SpringBootStarterTest {
 
+    @Autowired
+    @Qualifier("student1")
+    private Student student1;
+
+    @Autowired
+    @Qualifier("student2")
+    private Student student2;
+
+    @Autowired
+    private Klass klass;
+
+    @Autowired
+    private School school;
+
     @Test
-    public void assertDataSourceMap() {
+    public void assertStudent() {
+        System.out.println(student1.getName());
+        System.out.println(student2.getName());
+
+        klass.dong();
+        System.out.println(klass.getStudents());
+        System.out.println(student1 == klass.getStudents().get(0));
+
+        school.ding();
 //        assertThat(dataSource.getDataSourceMap().size(), is(2));
 //        assertTrue(dataSource.getDataSourceMap().containsKey("ds_0"));
 //        assertTrue(dataSource.getDataSourceMap().containsKey("ds_1"));
