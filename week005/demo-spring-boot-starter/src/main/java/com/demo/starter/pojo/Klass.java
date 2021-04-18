@@ -8,7 +8,6 @@ import java.util.List;
 
 
 @Data
-@ConfigurationProperties(prefix = "demo.klass")
 public class Klass {
     
     List<Student> students;

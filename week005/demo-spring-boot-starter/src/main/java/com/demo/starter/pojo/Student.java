@@ -18,7 +18,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@ConfigurationProperties(prefix = "demo.student")
 public class Student implements Serializable, BeanNameAware, ApplicationContextAware {
 
 
