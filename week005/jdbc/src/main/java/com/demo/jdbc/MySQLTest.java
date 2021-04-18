@@ -36,13 +36,29 @@ public class MySQLTest {
         customers.add(Customer.builder().firstName("firstName3").lastName("lastName3").build());
         mySQLTest.createBatch(customers);
 
+        // 查询
         System.out.println(mySQLTest.query("firstName1"));
+        // 更新
+        mySQLTest.update("firstName1", "lastName1000");
+
+        // 查询
+        System.out.println(mySQLTest.query("firstName1"));
+
+        // 更新 回滚
+        mySQLTest.updateRollBack("firstName1", "lastName10000");
+
+        // 查询
+        System.out.println(mySQLTest.query("firstName1"));
+
+        // 清空
+        mySQLTest.delete();
+
         // 关闭链接
         mySQLTest.close();
     }
 
     /**
-     * 单条更新
+     * 单条插入
      * @param first_name
      * @param last_name
      * @throws SQLException
@@ -55,7 +71,7 @@ public class MySQLTest {
     }
 
     /**
-     * 批量更新
+     * 批量插入
      * @param customers
      * @throws SQLException
      */
@@ -71,8 +87,6 @@ public class MySQLTest {
 
     public List<Customer> query(String first_name) throws SQLException {
         List<Customer> customers = new ArrayList<>();
-
-        //3.2.1 查
         PreparedStatement statement = conn.prepareStatement("SELECT id, first_name, last_name FROM customers WHERE first_name = ?");
         statement.setString(1, first_name);
         ResultSet resultSet = statement.executeQuery();
@@ -85,4 +99,37 @@ public class MySQLTest {
         }
         return customers;
     }
+
+    public boolean delete() throws SQLException {
+        PreparedStatement statement = conn.prepareStatement("truncate table customers");
+        return statement.execute();
+    }
+
+    public void update(String first_name, String last_name) throws SQLException {
+        System.out.println("更新last_name to " + last_name);
+
+        PreparedStatement statement = conn.prepareStatement("update customers set last_name = ? where first_name= ?");
+        statement.setObject(1, last_name);
+        statement.setObject(2, first_name);
+        statement.execute();
+    }
+
+
+    public void updateRollBack(String first_name, String last_name) throws SQLException {
+        try {
+            conn.setAutoCommit(false); //JDBC中默认是true，我们改成false，然后在后面手动提交
+            System.out.println("更新last_name to " + last_name);
+            PreparedStatement statement = conn.prepareStatement("update customers set last_name = ? where first_name= ?");
+            statement.setObject(1, last_name);
+            statement.setObject(2, first_name);
+            int i = 1 / 0;
+            statement.execute();
+            conn.commit();
+        } catch (Exception throwables) {
+            System.out.println("更新失败");
+            conn.rollback();
+        }
+
+    }
+
 }
