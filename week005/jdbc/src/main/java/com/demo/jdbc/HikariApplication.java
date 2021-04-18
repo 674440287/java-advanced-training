@@ -18,7 +18,7 @@ public class HikariApplication implements CommandLineRunner {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         SpringApplication.run(HikariApplication.class, args);
     }
 
@@ -40,10 +40,10 @@ public class HikariApplication implements CommandLineRunner {
         jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", splitUpNames);
 
         System.out.println("Querying for customer records where first_name = 'Josh':");
-        jdbcTemplate.query(
-                "SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[]{"Josh"},
-                (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
-        ).forEach(customer -> System.out.println(customer.toString()));
+//        jdbcTemplate.query(
+//                "SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[]{"Josh"},
+//                (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
+//        ).forEach(customer -> System.out.println(customer.toString()));
 
     }
 }
