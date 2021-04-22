@@ -39,7 +39,7 @@ public class MyCacheAspect {
 
         Object result = null;
         Object[] args = joinPoint.getArgs();
-        int userId = Integer.parseInt(args[0].toString());
+        int userId = (int) args[0];
         Object cacheObject = cacheMap.get(functionName).getIfPresent(userId);
         if (cacheObject==null){
             try {
