@@ -3,12 +3,9 @@ package com.example.demo.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,29 +21,11 @@ public class MyCacheAspect {
     @Pointcut("@annotation(com.example.demo.cache.MyCache)")
     private void pointcut() {}
 
-//    @Before("pointcut() && @annotation(logger)")
-//    public void advice(KthLog logger) {
-//        System.out.println("--- Kth日志的内容为[" + logger.value() + "] ---");
-//    }
-//
-//    @Around("pointcut() && @annotation(logger)")
-//    public Object advice(ProceedingJoinPoint joinPoint, KthLog logger) {
-//        System.out.println("["
-//                + joinPoint.getSignature().getDeclaringType().getSimpleName()
-//                + "][" + joinPoint.getSignature().getName()
-//                + "]-日志内容-[" + logger.value() + "]");
-//
-//        Object result = null;
-//
-//        try {
-//            result = joinPoint.proceed();
-//        } catch (Throwable throwable) {
-//            throwable.printStackTrace();
-//        }
-//        User user = new User();
-//        user.setName("电子竞技");
-//        return user;
-//    }
+    @Before("pointcut() && @annotation(cache)")
+    public void adviceBefore(MyCache cache) {
+        System.out.println("Before  @annotation(cache) cache value = [" + cache.value() + "] ---");
+    }
+
 
     @Around("pointcut() && @annotation(cache)")
     public Object advice(ProceedingJoinPoint joinPoint, MyCache cache) {
