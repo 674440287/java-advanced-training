@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface KthLog {
+public @interface MyCache {
 
-    String value() default "";
+    int value() default 0;
 }

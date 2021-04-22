@@ -13,7 +13,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @KthLog("这是日志内容")
+    @MyCache(60)
     @RequestMapping("user/{id}")
     public User findUser(@PathVariable("id") Integer id) {
         return userService.findUserById(id);
