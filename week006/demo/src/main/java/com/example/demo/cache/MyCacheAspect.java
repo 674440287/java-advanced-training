@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 public class MyCacheAspect {
 
-
     Map<String, Cache<Integer,Object>> cacheMap = new HashMap<>();
-
 
     @Pointcut("@annotation(com.example.demo.cache.MyCache)")
     private void pointcut() {}
