@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.example.demo.entity.Customer;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,7 +59,7 @@ public class MySQLTest {
         System.out.println(mySQLTest.query("firstName1"));
 
         // 清空
-        mySQLTest.delete();
+//        mySQLTest.delete();
 
         // 关闭链接
         mySQLTest.close();
@@ -120,7 +118,6 @@ public class MySQLTest {
         statement.execute();
     }
 
-
     public void updateRollBack(String first_name, String last_name) throws SQLException {
         try {
             conn.setAutoCommit(false); //JDBC中默认是true，我们改成false，然后在后面手动提交
@@ -137,17 +134,5 @@ public class MySQLTest {
         }
 
     }
-
-}
-
-
-@Data
-@AllArgsConstructor
-@Builder
-class Customer {
-    private int id;
-
-    private String firstName;
-    private String lastName;
 
 }
