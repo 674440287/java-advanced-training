@@ -87,6 +87,7 @@ public class MySQLTest {
             statement.addBatch();
         }
         statement.executeBatch();
+        statement.clearBatch(); //清空批处理
     }
 
     public List<Customer> query(String first_name) throws SQLException {
@@ -132,7 +133,6 @@ public class MySQLTest {
             System.out.println("更新失败");
             conn.rollback();
         }
-
     }
 
 }
