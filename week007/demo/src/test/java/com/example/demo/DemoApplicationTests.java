@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @SpringBootTest
 class DemoApplicationTests {
 
     @Autowired
-    @Qualifier("dataSource1")
+    @Qualifier("master")
     DataSource dataSource;
 
     @Autowired
-    @Qualifier("dataSource2")
+    @Qualifier("slave")
     DataSource dataSource2;
 
     @Test

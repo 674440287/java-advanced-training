@@ -17,15 +17,26 @@ import java.util.List;
 public class DynamicDatasourceService {
 
     @Autowired
-    @Qualifier("dataSource1")
-    DataSource dataSource;
+    @Qualifier("master")
+    DataSource masterDataSource;
 
     @Autowired
-    @Qualifier("dataSource2")
-    DataSource dataSource2;
+    @Qualifier("slave")
+    DataSource slaveDataSource;
 
 
-    public List<Customer> query(Connection conn, String first_name) throws SQLException {
+    public boolean create(String first_name, String last_name) throws SQLException {
+        Connection conn = masterDataSource.getConnection();
+
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO customers(first_name, last_name) VALUES (?,?)");
+        statement.setObject(1, first_name);
+        statement.setObject(2, last_name);
+        return statement.execute();
+    }
+
+
+    public List<Customer> query(String first_name) throws SQLException {
+        Connection conn = slaveDataSource.getConnection();
         List<Customer> customers = new ArrayList<>();
         PreparedStatement statement = conn.prepareStatement("SELECT id, first_name, last_name FROM customers WHERE first_name = ?");
         statement.setString(1, first_name);
@@ -38,13 +49,6 @@ public class DynamicDatasourceService {
                     .build());
         }
         return customers;
-    }
-
-    public String test(int a){
-        if (a<1){
-
-        }
-        return "qwer";
     }
 
 }

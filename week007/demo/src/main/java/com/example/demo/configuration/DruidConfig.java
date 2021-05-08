@@ -20,7 +20,7 @@ public class DruidConfig {
     @Autowired
     DruidDataSourceProperties properties;
 
-    @Bean("dataSource1")
+    @Bean("master")
     public DataSource druidDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setDriverClassName(properties.getDriverClassName());
@@ -50,7 +50,7 @@ public class DruidConfig {
         return druidDataSource;
     }
 
-    @Bean("dataSource2")
+    @Bean("slave")
     public DataSource druidDataSource2() {
         String url = "jdbc:mysql://127.0.0.1:3307/test?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai";
         DruidDataSource druidDataSource = new DruidDataSource();
