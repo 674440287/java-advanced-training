@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `t_product_info`(
 DROP TABLE IF EXISTS `t_order_info`;
 
 CREATE TABLE IF NOT EXISTS `t_order_info`(
-   `order_id` int   NOT NULL,
+   `order_id` bigint   NOT NULL,
    `order_sn` varchar(64) DEFAULT NULL COMMENT '订单编号',
   `total_amount` decimal(10,2) DEFAULT NULL COMMENT '订单总金额',
   `pay_amount` decimal(10,2) DEFAULT NULL COMMENT '应付金额（实际支付金额）',

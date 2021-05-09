@@ -116,13 +116,3 @@ public class MySQLInsert {
     }
 
 }
-//
-// 10000
-// 单个创建
-//statementCreate
-//39594
-//preparedStatementCreate
-//41393
-//批量创建
-//createBatch
-//27747
