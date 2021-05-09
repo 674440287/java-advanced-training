@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 public class Order {
 
-    private int orderId;
+    private long orderId;
     private String orderSn;
     private BigDecimal totalAmount;
     private BigDecimal payAmount;

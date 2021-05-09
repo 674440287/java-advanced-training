@@ -1,7 +1,6 @@
 package com.example.demo;
 
-
-
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,104 +33,96 @@ public class MySQLInsert {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySQLInsert mySQLInsert = new MySQLInsert();
-        // 单个创建
-        mySQLInsert.create("firstName1","lastName1");
+        Snowflake snowFlake = new Snowflake(2, 3);
+        long start;
+        int count = 100000;
 
-        // 批量创建
-        List<Customer> customers = new ArrayList<>();
-        customers.add(Customer.builder().firstName("firstName2").lastName("lastName2").build());
-        customers.add(Customer.builder().firstName("firstName3").lastName("lastName3").build());
-        mySQLInsert.createBatch(customers);
+        List<Order> orders = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            orders.add(Order.builder()
+                    .orderId(snowFlake.nextId()).orderSn("23412341412341234").orderDesc("qwerwnisndfa")
+                    .productId(123).userId(2323)
+                    .totalAmount(new BigDecimal("1.2"))
+                    .payAmount(new BigDecimal("1.2"))
+                    .build());
+        }
+        System.out.println("单个创建");
+        start = System.currentTimeMillis();
+        for (Order order:orders){
+            mySQLInsert.statementCreate(order);
+        }
+        System.out.println("statementCreate");
+        System.out.println(System.currentTimeMillis()-start);
+        mySQLInsert.delete();
 
-        // 查询
-        System.out.println(mySQLInsert.query("firstName1"));
-        // 更新
-        mySQLInsert.update("firstName1", "lastName1000");
+        start = System.currentTimeMillis();
+        for (Order order:orders){
+            mySQLInsert.preparedStatementCreate(order);
+        }
+        System.out.println("preparedStatementCreate");
+        System.out.println(System.currentTimeMillis()-start);
+        mySQLInsert.delete();
 
-        // 查询
-        System.out.println(mySQLInsert.query("firstName1"));
-
-        // 更新 回滚
-        mySQLInsert.updateRollBack("firstName1", "lastName10000");
-
-        // 查询
-        System.out.println(mySQLInsert.query("firstName1"));
-
-        // 清空
-//        mySQLTest.delete();
+        System.out.println("批量创建");
+        start = System.currentTimeMillis();
+        mySQLInsert.createBatch(orders);
+        System.out.println("createBatch");
+        System.out.println(System.currentTimeMillis()-start);
+        mySQLInsert.delete();
 
         // 关闭链接
         mySQLInsert.close();
     }
 
-    /**
-     * 单条插入
-     */
-    public void create(String first_name, String last_name) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement("INSERT INTO customers(first_name, last_name) VALUES (?,?)");
-        statement.setObject(1, first_name);
-        statement.setObject(2, last_name);
-        statement.execute();
+    public boolean statementCreate(Order order) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = String.format("INSERT INTO t_order_info (order_id, order_sn, order_desc, total_amount, pay_amount, user_id, product_id) VALUES (%s, %s, '%s', %s, %s, %s, %s)",
+                order.getOrderId(),order.getOrderSn(),order.getOrderDesc(),order.getTotalAmount(), order.getPayAmount(),order.getUserId(), order.getProductId());
+        return statement.execute(sql);
     }
 
-    /**
-     * 批量插入
-     * @param customers
-     */
-    public void createBatch(List<Customer> customers) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement("INSERT INTO customers(first_name, last_name) VALUES (?,?)");
-        for (Customer customer:customers){
-            statement.setString(1, customer.getFirstName());
-            statement.setString(2, customer.getLastName());
+
+    public boolean preparedStatementCreate(Order order) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO t_order_info (order_id, order_sn, order_desc, total_amount, pay_amount, user_id, product_id)  VALUES (?,?,?,?,?,?,?)");
+        statement.setLong(1, order.getOrderId());
+        statement.setString(2, order.getOrderSn());
+        statement.setString(3, order.getOrderDesc());
+        statement.setBigDecimal(4, order.getTotalAmount());
+        statement.setBigDecimal(5, order.getPayAmount());
+        statement.setInt(6,order.getProductId());
+        statement.setInt(7,order.getUserId());
+        return statement.execute();
+    }
+
+    public void createBatch(List<Order> orders) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO t_order_info (order_id, order_sn, order_desc, total_amount, pay_amount, user_id, product_id)  VALUES (?,?,?,?,?,?,?)");
+        for (Order order:orders){
+            statement.setLong(1, order.getOrderId());
+            statement.setString(2, order.getOrderSn());
+            statement.setString(3, order.getOrderDesc());
+            statement.setBigDecimal(4, order.getTotalAmount());
+            statement.setBigDecimal(5, order.getPayAmount());
+            statement.setInt(6,order.getProductId());
+            statement.setInt(7,order.getUserId());
             statement.addBatch();
         }
         statement.executeBatch();
         statement.clearBatch(); //清空批处理
     }
 
-    public List<Customer> query(String first_name) throws SQLException {
-        List<Customer> customers = new ArrayList<>();
-        PreparedStatement statement = conn.prepareStatement("SELECT id, first_name, last_name FROM customers WHERE first_name = ?");
-        statement.setString(1, first_name);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            customers.add(Customer.builder()
-                    .id(resultSet.getInt("id"))
-                    .firstName(resultSet.getString("first_name"))
-                    .lastName(resultSet.getString("last_name"))
-                    .build());
-        }
-        return customers;
-    }
-
     public boolean delete() throws SQLException {
-        PreparedStatement statement = conn.prepareStatement("truncate table customers");
+        PreparedStatement statement = conn.prepareStatement("truncate table t_order_info;");
         return statement.execute();
     }
 
-    public void update(String first_name, String last_name) throws SQLException {
-        System.out.println("更新last_name to " + last_name);
-
-        PreparedStatement statement = conn.prepareStatement("update customers set last_name = ? where first_name= ?");
-        statement.setObject(1, last_name);
-        statement.setObject(2, first_name);
-        statement.execute();
-    }
-
-    public void updateRollBack(String first_name, String last_name) throws SQLException {
-        try {
-            conn.setAutoCommit(false); //JDBC中默认是true，我们改成false，然后在后面手动提交
-            System.out.println("更新last_name to " + last_name);
-            PreparedStatement statement = conn.prepareStatement("update customers set last_name = ? where first_name= ?");
-            statement.setObject(1, last_name);
-            statement.setObject(2, first_name);
-            int i = 1 / 0;
-            statement.execute();
-            conn.commit();
-        } catch (Exception throwables) {
-            System.out.println("更新失败");
-            conn.rollback();
-        }
-    }
-
 }
+//
+// 10000
+// 单个创建
+//statementCreate
+//39594
+//preparedStatementCreate
+//41393
+//批量创建
+//createBatch
+//27747
