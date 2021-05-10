@@ -5,22 +5,22 @@
 
 单个创建
 statementCreate
-39594
+39594 ms
 preparedStatementCreate
-41393
+41393 ms
 批量创建
 createBatch
-27747
+27747 ms
 
 # 100000 id
 单个创建
 statementCreate
-399708
+399708 ms
 preparedStatementCreate
-400264
+400264 ms
 批量创建
 createBatch
-279611
+279611 ms
 ```
 9.（必做）读写分离 - 动态切换数据源版本 1.0
 homework-9
