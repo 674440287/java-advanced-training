@@ -1,6 +1,2 @@
-# mysql
-grant all privileges  on *.* to root@'%';
-
-mysql -h127.0.0.1 -P3307 -uroot -proot -A
-
-insert into sharding_db.t_order values(1,'1');
+1. homework-2 第二题
+2. homework-6 第六题 基于ShardingSphere XA
