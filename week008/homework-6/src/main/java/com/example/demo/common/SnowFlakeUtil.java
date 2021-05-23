@@ -1,11 +1,6 @@
 package com.example.demo.common;
 
 
-/**
- * @Description 唯一Id生成器基于雪花算法
- * @Author jie.zhao
- * @Date 2019/8/15 11:58
- */
 public class SnowFlakeUtil {
 
     private static SnowFlakeUtil flowIdWorker = new SnowFlakeUtil(1);
