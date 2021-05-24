@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Customer;
+import com.example.demo.entity.Order;
 import com.example.demo.service.DynamicDatasourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +24,7 @@ public class DynamicDatasourceController {
 
     @GetMapping("list")
     public Map<?,?> list(@RequestParam String firstName) throws SQLException {
-        Map<String, List<Customer>> result = new HashMap<>();
+        Map<String, List<Order>> result = new HashMap<>();
         result.put("data",dynamicDatasourceService.query(firstName));
         return result;
     }

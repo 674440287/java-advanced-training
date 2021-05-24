@@ -11,14 +11,10 @@ import java.math.BigDecimal;
 @Builder
 public class Order {
 
-    private int orderId;
-    private String orderSn;
-    private BigDecimal totalAmount;
-    private BigDecimal payAmount;
-    private String orderDesc;
-    private int userId;
-    private int productId;
-    private long createTime;
-    private long updateTime;
+    private Long orderId;
+
+    private Long userId;
+
+    private String status;
 
 }
