@@ -11,8 +11,6 @@ import org.mybatis.spring.annotation.MapperScans;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ResourceUtils;
 
 @SpringBootApplication
@@ -31,9 +29,7 @@ public class DemoApplication {
             dataSource = YamlShardingSphereDataSourceFactory.createDataSource(
                 ResourceUtils.getFile(
                 "classpath:shardingsphere.yaml"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return dataSource;

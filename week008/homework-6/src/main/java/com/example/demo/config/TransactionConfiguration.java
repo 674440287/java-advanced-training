@@ -19,6 +19,7 @@ public class TransactionConfiguration {
     
     @Bean
     public JdbcTemplate jdbcTemplate(final DataSource dataSource) {
+        System.out.println(dataSource.getClass().getName());
         return new JdbcTemplate(dataSource);
     }
 }

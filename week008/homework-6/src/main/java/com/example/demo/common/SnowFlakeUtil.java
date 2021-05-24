@@ -3,7 +3,7 @@ package com.example.demo.common;
 
 public class SnowFlakeUtil {
 
-    private static SnowFlakeUtil flowIdWorker = new SnowFlakeUtil(1);
+    private static final SnowFlakeUtil flowIdWorker = new SnowFlakeUtil(1);
     private final long id;
     /**
      * 时间起始标记点，作为基准，一般取系统的最近时间
@@ -16,7 +16,7 @@ public class SnowFlakeUtil {
     /**
      * 机器ID最大值: 1023
      */
-    private final long maxWorkerId = -1L ^ -1L << this.workerIdBits;
+    private final long maxWorkerId = ~(-1L << this.workerIdBits);
     /**
      * 毫秒内自增位
      */
@@ -33,7 +33,7 @@ public class SnowFlakeUtil {
     /**
      * 4095,111111111111,12位
      */
-    private final long sequenceMask = -1L ^ -1L << this.sequenceBits;
+    private final long sequenceMask = ~(-1L << this.sequenceBits);
     /**
      * 0，并发控制
      */
