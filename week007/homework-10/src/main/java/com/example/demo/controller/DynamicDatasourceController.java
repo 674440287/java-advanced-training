@@ -23,16 +23,16 @@ public class DynamicDatasourceController {
     private DynamicDatasourceService dynamicDatasourceService;
 
     @GetMapping("list")
-    public Map<?,?> list(@RequestParam String firstName) throws SQLException {
+    public Map<?,?> list(@RequestParam String userId) throws SQLException {
         Map<String, List<Order>> result = new HashMap<>();
-        result.put("data",dynamicDatasourceService.query(firstName));
+        result.put("data",dynamicDatasourceService.query(userId));
         return result;
     }
 
     @GetMapping("create")
-    public Map<?,?> create(@RequestParam String firstName,@RequestParam String lastName) throws SQLException {
+    public Map<?,?> create(@RequestParam String userId,@RequestParam String status) throws SQLException {
         Map<String, Boolean> result = new HashMap<>();
-        result.put("data",dynamicDatasourceService.create(firstName, lastName));
+        result.put("data",dynamicDatasourceService.create(userId, status));
         return result;
     }
 
