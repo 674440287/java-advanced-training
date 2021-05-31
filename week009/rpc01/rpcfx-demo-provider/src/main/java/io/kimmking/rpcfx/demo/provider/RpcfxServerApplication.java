@@ -1,6 +1,5 @@
 package io.kimmking.rpcfx.demo.provider;
 
-import com.alibaba.fastjson.JSON;
 import io.kimmking.rpcfx.api.RpcfxRequest;
 import io.kimmking.rpcfx.api.RpcfxResolver;
 import io.kimmking.rpcfx.api.RpcfxResponse;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.UnknownHostException;
 
 @SpringBootApplication
 @RestController
@@ -32,18 +29,19 @@ public class RpcfxServerApplication {
 	public static void main(String[] args) throws Exception {
 
 		// start zk client
-//		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-//		CuratorFramework client = CuratorFrameworkFactory.builder().connectString("localhost:2181").namespace("rpcfx").retryPolicy(retryPolicy).build();
-//		client.start();
-//
-//
-//		// register service
-//		// xxx "io.kimmking.rpcfx.demo.api.UserService"
-//
-//		String userService = "io.kimking.rpcfx.demo.api.UserService";
-//		registerService(client, userService);
-//		String orderService = "io.kimking.rpcfx.demo.api.OrderService";
-//		registerService(client, orderService);
+		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+		CuratorFramework client = CuratorFrameworkFactory.builder()
+				.connectString("localhost:2181").namespace("rpcfx").retryPolicy(retryPolicy).build();
+		client.start();
+
+
+		// register service
+		// xxx "io.kimmking.rpcfx.demo.api.UserService"
+
+		String userService = "io.kimking.rpcfx.demo.api.UserService";
+		registerService(client, userService);
+		String orderService = "io.kimking.rpcfx.demo.api.OrderService";
+		registerService(client, orderService);
 
 
 		// 进一步的优化，是在spring加载完成后，从里面拿到特定注解的bean，自动注册到zk
@@ -54,7 +52,7 @@ public class RpcfxServerApplication {
 	private static void registerService(CuratorFramework client, String service) throws Exception {
 		ServiceProviderDesc userServiceSesc = ServiceProviderDesc.builder()
 				.host(InetAddress.getLocalHost().getHostAddress())
-				.port(8080).serviceClass(service).build();
+				.port(8081).serviceClass(service).build();
 		// String userServiceSescJson = JSON.toJSONString(userServiceSesc);
 
 		try {
@@ -73,7 +71,7 @@ public class RpcfxServerApplication {
 	RpcfxInvoker invoker;
 
 	@PostMapping("/")
-	public RpcfxResponse invoke(@RequestBody RpcfxRequest request) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public RpcfxResponse invoke(@RequestBody RpcfxRequest request) {
 		return invoker.invoke(request);
 	}
 

@@ -11,11 +11,13 @@ import io.kimmking.rpcfx.demo.api.User;
 import io.kimmking.rpcfx.demo.api.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class RpcfxClientApplication {
 
 	// 二方库
@@ -23,22 +25,22 @@ public class RpcfxClientApplication {
 	// nexus, userserivce -> userdao -> user
 	//
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		// UserService service = new xxx();
 		// service.findById
 
-		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/");
+		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8081/");
 		User user = userService.findById(1);
 		System.out.println("find user id=1 from server: " + user.getName());
 
-		OrderService orderService = Rpcfx.create(OrderService.class, "http://localhost:8080/");
+		OrderService orderService = Rpcfx.create(OrderService.class, "http://localhost:8081/");
 		Order order = orderService.findOrderById(1992129);
-		System.out.printf("find order name=%s, amount=%f%n",order.getName(),order.getAmount());
+		System.out.println(String.format("find order name=%s, amount=%f",order.getName(),order.getAmount()));
 
 		//
-//		UserService userService2 = Rpcfx.createFromRegistry(UserService.class, "localhost:2181", new TagRouter(), new RandomLoadBalancer(), new CuicuiFilter());
-
+		UserService userService2 = Rpcfx.createFromRegistry(UserService.class, "localhost:2181", new TagRouter(), new RandomLoadBalancer(), new CuicuiFilter());
+		System.err.println("=================================OK");
 //		SpringApplication.run(RpcfxClientApplication.class, args);
 	}
 
@@ -60,7 +62,7 @@ public class RpcfxClientApplication {
 	private static class CuicuiFilter implements Filter {
 		@Override
 		public boolean filter(RpcfxRequest request) {
-			System.out.printf("filter %s -> %s%n", this.getClass().getName(), request.toString());
+			log.info("filter {} -> {}", this.getClass().getName(), request.toString());
 			return true;
 		}
 	}

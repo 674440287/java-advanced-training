@@ -5,35 +5,48 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import io.kimmking.rpcfx.api.RpcfxRequest;
 import io.kimmking.rpcfx.api.RpcfxResolver;
 import io.kimmking.rpcfx.api.RpcfxResponse;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RpcfxInvoker {
 
     private RpcfxResolver resolver;
 
-    public RpcfxInvoker(RpcfxResolver resolver){
+    public RpcfxInvoker(RpcfxResolver resolver) {
         this.resolver = resolver;
     }
 
-    public RpcfxResponse invoke(RpcfxRequest request) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public RpcfxResponse invoke(RpcfxRequest request) {
         RpcfxResponse response = new RpcfxResponse();
         String serviceClass = request.getServiceClass();
 
         // 作业1：改成泛型和反射
-//        Object service = resolver.resolve(serviceClass);//this.applicationContext.getBean(serviceClass);
-        Object service = resolver.resolve(Class.forName(serviceClass));//this.applicationContext.getBean(serviceClass);
-        System.out.println(service);
+        Object service = resolver.resolve(serviceClass);//this.applicationContext.getBean(serviceClass);
+
         try {
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+          //Class<?> aClass = Class.forName(serviceClass);
+          //Method method = resolveMethodFromClass(aClass, request.getMethod());
+          //boolean anInterface = aClass.isInterface();
+          //Class<?> superclass = aClass.getSuperclass();
+          //ClassLoader parent = aClass.getClassLoader().getParent();
+          //Object o = aClass.newInstance();
+          //Object object = aClass.newInstance();//TODO
+          //Object result = method.invoke(object, request.getParams()); // dubbo, fastjson,
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             Method method = resolveMethodFromClass(service.getClass(), request.getMethod());
             Object result = method.invoke(service, request.getParams()); // dubbo, fastjson,
             // 两次json序列化能否合并成一个
             response.setResult(JSON.toJSONString(result, SerializerFeature.WriteClassName));
             response.setStatus(true);
             return response;
-        } catch ( IllegalAccessException | InvocationTargetException e) {
+//        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (Exception e) {
 
             // 3.Xstream
 
