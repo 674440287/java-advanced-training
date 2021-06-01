@@ -1,8 +1,8 @@
-package com.yb.dubbo.consumer.controller;
+package com.lyp.dubbo.consumer.controller;
 
-import com.yb.dubbo.api.response.ResultInfo;
-import com.yb.dubbo.api.service.AccountService;
-import com.yb.dubbo.api.service.FrozenAssetsService;
+import com.lyp.dubbo.api.response.ResultInfo;
+import com.lyp.dubbo.api.service.AccountService;
+import com.lyp.dubbo.api.service.FrozenAssetsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

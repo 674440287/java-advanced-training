@@ -1,14 +1,8 @@
-package com.yb.dubbo.api.response;
+package com.lyp.dubbo.api.response;
 
 import lombok.Data;
 
-/**
- * 这里是restful风格,返回数据封装类,为了方便,可以直接传入Object,
- * 而不是具体的类型例如Result<Object>就可以接受各种返回类型,就不会每次都去更改了
- *
- * @author yangbiao
- * @date 2021/5/25
- */
+
 @Data
 public class ResultInfo<T> {
    public static final String OK = "操作成功";

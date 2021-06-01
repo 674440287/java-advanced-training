@@ -1,4 +1,4 @@
-package com.yb.dubbo.consumer;
+package com.lyp.dubbo.provider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2021/5/28
  */
 @SpringBootApplication
-public class DubboConsumerApplication {
+public class DubboProviderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DubboConsumerApplication.class, args);
+        SpringApplication.run(DubboProviderApplication.class, args);
     }
 
 }

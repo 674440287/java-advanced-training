@@ -1,4 +1,4 @@
-package com.yb.dubbo.api.config;
+package com.lyp.dubbo.api.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
@@ -16,12 +16,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Knife4j的Swagger配置
- *
- * @author yangbiao
- * @date 2021/5/17
- */
+
 @Profile({"dev", "test"})
 @Configuration
 @EnableKnife4j
@@ -97,7 +92,7 @@ public class Knife4jSwaggerConfig {
                 .title("SpringBoot项目 后台服务API接口文档")
                 .description("使用 knife4j 搭建的后台服务API接口文档")
                 .termsOfServiceUrl("http://localhost:8080/")
-                .contact(new Contact("yb", "", "yb@163.com"))
+                .contact(new Contact("giao", "", "agiao@163.com"))
                 .version("1.0.0")
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.yb.dubbo.provider.controller;
+package com.lyp.dubbo.provider.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
