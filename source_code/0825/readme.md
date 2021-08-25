@@ -1,9 +1,9 @@
 # 二进制运行
-git clone https://github.com/apache/shardingsphere-ui.git；
-运行 mvn clean install -Prelease；
-获取安装包 /shardingsphere-ui/shardingsphere-ui-distribution/target/apache-shardingsphere-${latest.release.version}-shardingsphere-ui-bin.tar.gz；
-解压缩后运行bin/start.sh；
-访问http://localhost:8088/。
+git clone https://github.com/apache/shardingsphere-ui.git；   
+运行 mvn clean install -Prelease；            
+获取安装包 /shardingsphere-ui/shardingsphere-ui-distribution/target/apache-shardingsphere-${latest.release.version}-shardingsphere-ui-bin.tar.gz；       
+解压缩后运行bin/start.sh；         
+访问http://localhost:8088/。                      
 
 
 # 配置
@@ -39,8 +39,8 @@ user.admin.password=admin
 
 
 # 运行状态
-添加激活注册中心后，可以查看当前注册中心所有运行实例信息。
+添加激活注册中心后，可以查看当前注册中心所有运行实例信息。     
 
-可以通过操作按钮对运行实例进行熔断与恢复操作。
+可以通过操作按钮对运行实例进行熔断与恢复操作。      
 
-可以查看所有从库信息，并进行从库禁用与恢复操作。
+可以查看所有从库信息，并进行从库禁用与恢复操作。          
